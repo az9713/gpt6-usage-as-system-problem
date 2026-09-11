@@ -10,7 +10,7 @@ This project turns that system into an actionable operating model. It separates 
 
 ## Read the field guide
 
-Open [gpt-6-usage.html](gpt-6-usage.html) for the complete standalone dark-mode report.
+Open the [live Codex Usage as a Systems Problem field guide](https://az9713.github.io/gpt6-usage-as-system-problem/gpt-6-usage.html) for the complete standalone dark-mode report. The repository also contains the portable [HTML source](gpt-6-usage.html).
 
 The guide covers:
 
