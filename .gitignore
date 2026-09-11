@@ -1,0 +1,4 @@
+# Public repository allowlist: keep all private working sources out of Git.
+*
+!.gitignore
+!meta-summary.html

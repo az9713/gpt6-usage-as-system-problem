@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="A practical, evidence-aware field guide to reducing avoidable Codex context and usage while preserving result quality.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <title>Codex Usage: From Anecdote to an Evidence-Backed Operating System</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --canvas: #0b1020;
+      --paper: #121a2d;
+      --ink: #e8edfa;
+      --muted: #a7b1c9;
+      --line: #2e3a58;
+      --navy: #dce6ff;
+      --solid: #1d3470;
+      --blue: #79a7ff;
+      --violet: #b693ff;
+      --coral: #ff887b;
+      --green: #67d5b0;
+      --amber: #f1c26f;
+      --soft-blue: #18274a;
+      --soft-violet: #2a2144;
+      --soft-coral: #352126;
+      --soft-green: #17352e;
+      --shadow: 0 20px 55px rgba(0, 0, 0, .32);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 82% 8%, rgba(110, 73, 201, .16), transparent 32%),
+        linear-gradient(rgba(121, 167, 255, .055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(121, 167, 255, .055) 1px, transparent 1px),
+        var(--canvas);
+      background-size: 32px 32px;
+      color: var(--ink);
+      font-family: "Segoe UI", Aptos, system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.65;
+    }
+    a { color: var(--blue); text-underline-offset: 3px; }
+    a:hover { color: var(--violet); }
+    a:focus-visible, summary:focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; border-radius: 3px; }
+    code, pre, .mono, .tag, .rank {
+      font-family: Consolas, "Cascadia Code", ui-monospace, monospace;
+    }
+    header, main, footer { width: min(1180px, calc(100% - 36px)); margin: 0 auto; }
+    header { padding: 74px 0 32px; }
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--blue);
+      font: 750 13px/1.2 Consolas, monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .kicker::before { content: ""; width: 46px; height: 4px; background: linear-gradient(90deg, var(--blue), var(--violet)); border-radius: 2px; }
+    h1, h2, h3, h4 { font-family: Georgia, "Times New Roman", serif; color: var(--navy); }
+    h1 { max-width: 980px; margin: 20px 0 22px; font-size: clamp(43px, 7.5vw, 88px); line-height: .98; letter-spacing: -.045em; }
+    h1 em { color: var(--blue); font-style: normal; }
+    h2 { margin: 0 0 18px; font-size: clamp(30px, 4vw, 48px); line-height: 1.08; letter-spacing: -.025em; }
+    h3 { margin: 0 0 10px; font-size: 24px; line-height: 1.22; }
+    h4 { margin: 22px 0 8px; font-size: 19px; }
+    p { margin: 10px 0; }
+    .lede { max-width: 860px; color: #c1cbe0; font-size: clamp(19px, 2.2vw, 25px); line-height: 1.5; }
+    .thesis {
+      display: grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap: 1px;
+      margin-top: 38px;
+      overflow: hidden;
+      border: 1px solid var(--navy);
+      border-radius: var(--radius);
+      background: var(--solid);
+      box-shadow: var(--shadow);
+    }
+    .thesis > div { background: var(--paper); padding: 25px 28px; }
+    .thesis .verdict { background: var(--solid); color: #fff; }
+    .thesis .verdict strong { display: block; margin-bottom: 9px; color: #a9c5ff; font: 700 12px/1.2 Consolas, monospace; letter-spacing: .12em; text-transform: uppercase; }
+    .thesis p { margin: 0; }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      margin: 0 auto;
+      border-block: 1px solid var(--line);
+      background: rgba(18, 26, 45, .94);
+      backdrop-filter: blur(12px);
+    }
+    nav .inner { width: min(1180px, calc(100% - 36px)); margin: auto; display: flex; gap: 6px; overflow-x: auto; padding: 10px 0; }
+    nav a { flex: 0 0 auto; padding: 8px 12px; border-radius: 8px; color: var(--navy); font-size: 14px; font-weight: 700; text-decoration: none; }
+    nav a:hover { background: var(--soft-blue); color: var(--blue); }
+    section { padding: 72px 0 12px; scroll-margin-top: 58px; }
+    .section-head { display: grid; grid-template-columns: 120px minmax(0, 760px); gap: 22px; align-items: start; margin-bottom: 30px; }
+    .rank { color: var(--blue); font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; padding-top: 11px; }
+    .section-head p { color: var(--muted); font-size: 19px; }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, .18);
+      padding: 26px;
+    }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .callout { border-left: 6px solid var(--blue); }
+    .callout.coral { border-left-color: var(--coral); }
+    .callout.green { border-left-color: var(--green); }
+    .tag { display: inline-block; margin-bottom: 13px; border-radius: 999px; padding: 5px 9px; font-size: 11px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+    .verified { background: var(--soft-green); color: var(--green); }
+    .advice { background: var(--soft-violet); color: var(--violet); }
+    .unknown { background: #342b18; color: var(--amber); }
+    .derived { background: var(--soft-blue); color: var(--blue); }
+    .flow {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0;
+    }
+    .flow::before { content: ""; position: absolute; left: 4%; right: 4%; top: 34px; height: 3px; background: linear-gradient(90deg, var(--violet), var(--blue), var(--coral)); z-index: 0; }
+    .node { position: relative; z-index: 1; min-height: 178px; padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); }
+    .node b { display: grid; place-items: center; width: 34px; height: 34px; margin-bottom: 35px; border-radius: 50%; background: var(--solid); color: #fff; font: 750 13px Consolas, monospace; }
+    .node strong { display: block; color: var(--navy); }
+    .node span { display: block; margin-top: 5px; color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .equation {
+      margin: 24px 0;
+      padding: 24px;
+      border: 1px solid #40588c;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--soft-blue), var(--soft-violet));
+      color: var(--navy);
+      font: 700 clamp(18px, 2.5vw, 28px)/1.35 Georgia, serif;
+      text-align: center;
+    }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
+    table { width: 100%; min-width: 800px; border-collapse: collapse; font-size: 15px; }
+    th, td { padding: 15px 17px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { background: var(--solid); color: #fff; font: 700 12px/1.35 Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
+    tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #18233d; }
+    .priority { white-space: nowrap; font-weight: 800; color: var(--navy); }
+    .priority::before { display: inline-block; width: 9px; height: 9px; margin-right: 8px; border-radius: 50%; content: ""; background: var(--blue); }
+    .p2::before { background: var(--violet); }
+    .p3::before { background: var(--coral); }
+    ul, ol { padding-left: 22px; }
+    li { margin: 9px 0; }
+    .ladder { counter-reset: rung; display: grid; gap: 14px; }
+    .rung { counter-increment: rung; display: grid; grid-template-columns: 52px 1fr; gap: 18px; align-items: start; padding: 21px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); }
+    .rung::before { content: counter(rung); display: grid; place-items: center; width: 45px; height: 45px; border-radius: 12px; background: var(--solid); color: #fff; font: 800 16px Consolas, monospace; }
+    .rung p { color: var(--muted); }
+    pre { margin: 14px 0 0; padding: 18px; overflow: auto; border: 1px solid #263451; border-radius: 12px; background: #080d1a; color: #eaf0ff; white-space: pre-wrap; font: 14px/1.55 Consolas, monospace; }
+    details { border-top: 1px solid var(--line); padding: 14px 0 0; margin-top: 16px; }
+    summary { color: var(--blue); cursor: pointer; font-weight: 750; }
+    .limits { background: var(--soft-coral); border-color: #6c383b; }
+    .fine { color: var(--muted); font-size: 14px; }
+    footer { padding: 52px 0 76px; color: var(--muted); font-size: 14px; }
+    footer strong { color: var(--navy); }
+    @media (max-width: 900px) {
+      .thesis, .grid-3 { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr 1fr; }
+      .flow::before { display: none; }
+      .node { min-height: auto; }
+      .node b { margin-bottom: 14px; }
+    }
+    @media (max-width: 620px) {
+      header { padding-top: 48px; }
+      .section-head { grid-template-columns: 1fr; gap: 0; }
+      .rank { padding-top: 0; }
+      .flow { grid-template-columns: 1fr; }
+      .card { padding: 21px; }
+      .rung { grid-template-columns: 42px 1fr; padding: 17px; gap: 12px; }
+      .rung::before { width: 40px; height: 40px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    @media print {
+      :root {
+        color-scheme: light;
+        --canvas: #fff;
+        --paper: #fff;
+        --ink: #111827;
+        --muted: #4b5563;
+        --line: #cbd5e1;
+        --navy: #142a59;
+        --solid: #142a59;
+        --blue: #2457d6;
+        --violet: #6e49c9;
+        --coral: #b44338;
+        --green: #14735b;
+        --amber: #80520c;
+        --soft-blue: #e8edff;
+        --soft-violet: #f1ebff;
+        --soft-coral: #fff0ed;
+        --soft-green: #e7f4ef;
+      }
+      body { background: #fff; font-size: 11pt; }
+      header, main, footer, nav .inner { width: 100%; }
+      header { padding-top: 20px; }
+      nav { display: none; }
+      section { padding-top: 30px; break-inside: avoid; }
+      .card, .rung, .table-wrap, .thesis { box-shadow: none; break-inside: avoid; }
+      .flow { grid-template-columns: repeat(5, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="kicker">A practical operating model for Codex usage</div>
+    <h1>Stop treating usage as a mystery. Treat it as a <em>systems problem.</em></h1>
+    <p class="lede">Start by separating context, cumulative usage, and stored data. Then reduce observable overhead. Finally, test model-routing and caching hypotheses without pretending that opaque provider-side accounting is settled science.</p>
+    <div class="thesis">
+      <div>
+        <strong>Meta-summary thesis</strong>
+        <p>The durable strategy is not “always use the cheapest model.” It is to minimize irrelevant material per request, keep work inside coherent task boundaries, delegate with bounded context, and reserve expensive capability for steps where it changes the outcome.</p>
+      </div>
+      <div class="verdict">
+        <strong>Evidence hierarchy</strong>
+        <p>Observable behavior guides action. Practitioner claims guide experiments. Neither is silently promoted into provider-side billing truth.</p>
+      </div>
+    </div>
+  </header>
+
+  <nav aria-label="Report navigation">
+    <div class="inner">
+      <a href="#model">Mental model</a>
+      <a href="#synthesis">What survives synthesis</a>
+      <a href="#actions">Action ladder</a>
+      <a href="#routing">Model routing</a>
+      <a href="#experiments">Experiments</a>
+      <a href="#inspiration">Inspiration</a>
+      <a href="#limits">Limits</a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="model">
+      <div class="section-head">
+        <div class="rank">01 · Spine</div>
+        <div>
+          <h2>The mental model comes first</h2>
+          <p>Usage discussions become confused when they treat three different quantities as though they were interchangeable.</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <article class="card callout">
+          <span class="tag verified">Core concept</span>
+          <h3>Context</h3>
+          <p>The instructions, history, tool results, source excerpts, and other material supplied to a model for one request.</p>
+        </article>
+        <article class="card callout coral">
+          <span class="tag verified">Core concept</span>
+          <h3>Cumulative usage</h3>
+          <p>Input and output accumulated across many requests. A large cumulative counter is not a single giant prompt and is not automatically a bill.</p>
+        </article>
+        <article class="card callout green">
+          <span class="tag verified">Core concept</span>
+          <h3>Disk footprint</h3>
+          <p>Stored logs, images, memories, caches, and state. A file existing on disk does not prove it is injected or causing inference.</p>
+        </article>
+      </div>
+      <div class="equation">Useful work per unit of usage ≈ outcome quality ÷ (irrelevant context + avoidable retries + unjustified model cost)</div>
+      <p class="fine">This equation is an analytical framing introduced by this meta-summary, not a provider billing formula.</p>
+
+      <div class="flow" aria-label="Five stages where avoidable usage can enter a Codex workflow">
+        <div class="node"><b>01</b><strong>Persistent setup</strong><span>Global instructions, style hooks, memory summary, skill catalog.</span></div>
+        <div class="node"><b>02</b><strong>Session history</strong><span>Old turns, compactions, unrelated task branches, repeated reads.</span></div>
+        <div class="node"><b>03</b><strong>Tool payloads</strong><span>Whole files, broad searches, long schemas, images and command output.</span></div>
+        <div class="node"><b>04</b><strong>Delegation</strong><span>Inherited turns, worker count, model choice, reasoning effort.</span></div>
+        <div class="node"><b>05</b><strong>Provider accounting</strong><span>Cache behavior, plan quotas, resets, speed tiers—mostly opaque here.</span></div>
+      </div>
+
+      <div class="card limits">
+        <span class="tag unknown">Critical boundary</span>
+        <h3>The first four stages are partly observable; the fifth is not</h3>
+        <p>You can inspect instructions, configuration, selected logs, processes, schedules, and task state. Those observations still cannot establish provider-side billing attribution, the fully assembled prompt for every request, cache-hit causes, or the exact quota savings from a change. Claims about cache invalidation and relative model expense should therefore motivate controlled tests—not declarations of mechanism.</p>
+      </div>
+    </section>
+
+    <section id="synthesis">
+      <div class="section-head">
+        <div class="rank">02 · Synthesis</div>
+        <div>
+          <h2>What survives an evidence check</h2>
+          <p>The strongest recommendations reduce irrelevant information directly and remain useful even when the provider’s internal accounting is opaque.</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Recommendation</th><th>Why it can help</th><th>What you can observe</th><th>Operating conclusion</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Start fresh tasks earlier</strong></td>
+              <td>Handoffs keep large projects from living in one ever-growing conversation.</td>
+              <td>Long histories, repeated compactions, and unrelated branches increase the material a task may carry.</td>
+              <td><span class="tag verified">High confidence</span><br>Use a handoff at a genuine task boundary. Freshness removes history, not global setup.</td>
+            </tr>
+            <tr>
+              <td><strong>Bound subagent context</strong></td>
+              <td>Full-history inheritance defeats surgical delegation; prefer self-contained worker prompts.</td>
+              <td>Inspect each worker launch for inherited turns, model choice, reasoning effort, and a clearly bounded responsibility.</td>
+              <td><span class="tag verified">Principle verified</span><br>Specify the smallest sufficient context. Do not assume every spawn currently leaks the full thread.</td>
+            </tr>
+            <tr>
+              <td><strong>Return narrow tool output</strong></td>
+              <td>Raw file dumps and broad command results can dominate the useful evidence.</td>
+              <td>Look for repeated whole-file reads, truncated searches, unbounded logs, and large media payloads.</td>
+              <td><span class="tag verified">Directly measured</span><br>Search names and counts first; then read only relevant ranges or fields.</td>
+            </tr>
+            <tr>
+              <td><strong>Prune unused integrations</strong></td>
+              <td>Plugins, skills, and MCP servers can enlarge catalogs or add standing instructions.</td>
+              <td>Inventory enabled integrations, identify overlapping capabilities, and distinguish configuration from actual per-request injection.</td>
+              <td><span class="tag unknown">Overhead plausible</span><br>Disable one confirmed-unused component at a time. Enabled does not mean its full schema is sent or that it makes calls.</td>
+            </tr>
+            <tr>
+              <td><strong>Use Astra selectively</strong></td>
+              <td>Astra is best treated as a specialist for hard end-to-end work; lighter models may cover routine or targeted work.</td>
+              <td>Compare matched tasks across models and reasoning levels, including retries and final correctness.</td>
+              <td><span class="tag advice">Operational hypothesis</span><br>Route by task difficulty and validate quality. Cheaper reasoning that triggers retries can lose.</td>
+            </tr>
+            <tr>
+              <td><strong>Avoid gratuitous mid-session switching</strong></td>
+              <td>Model or reasoning changes may alter caching behavior or force reprocessing.</td>
+              <td>Record exposed cache counters where available, but do not reverse-engineer billing from a subscription meter.</td>
+              <td><span class="tag advice">Experiment, do not assert</span><br>Choose model and effort before a coherent task; change at a handoff boundary when practical.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="actions">
+      <div class="section-head">
+        <div class="rank">03 · Action</div>
+        <div>
+          <h2>A reversible action ladder</h2>
+          <p>Use one small change, then verify. The sequence below puts zero-configuration habits before persistent edits.</p>
+        </div>
+      </div>
+      <div class="ladder">
+        <article class="rung">
+          <div>
+            <h3>Change task hygiene now</h3>
+            <p>Keep each conversation on one coherent deliverable. At a new objective, create a compact handoff containing the working directory, authoritative files, decisions, completed work, unresolved questions, and next action. Exclude dead ends and raw tool dumps.</p>
+            <pre>Keep this task focused. Search narrowly and return only relevant excerpts. Do not spawn parallel agents unless I ask. Keep the current model and effort unless a change is necessary. At a real task boundary, prepare a short handoff for a fresh conversation.</pre>
+          </div>
+        </article>
+        <article class="rung">
+          <div>
+            <h3>Stop repeated payload inflation</h3>
+            <p>Read a skill once per active context; after compaction, retrieve only the necessary section. For exploration, list matching files or counts before printing content. Extract fields from long HTML or JSON instead of echoing whole documents.</p>
+          </div>
+        </article>
+        <article class="rung">
+          <div>
+            <h3>Make delegation surgical</h3>
+            <p>Give each worker one bounded responsibility, relevant paths, constraints, and an expected output. Supply no conversation history unless the worker truly needs it. Match model strength and reasoning effort to the risk of the subtask rather than using the most expensive option reflexively.</p>
+          </div>
+        </article>
+        <article class="rung">
+          <div>
+            <h3>Remove duplicated standing instructions</h3>
+            <p>Multiple style, teaching, or persona layers can restate similar behavior at startup and after compaction. Inspect the assembled instructions where available, retain the behavior you value, and disable only the redundant layer. Measure the result in a fresh task.</p>
+          </div>
+        </article>
+        <article class="rung">
+          <div>
+            <h3>Trial one unused plugin or MCP server</h3>
+            <p>Back up <code>%USERPROFILE%\.codex\config.toml</code>, disable one confirmed-unused integration, restart into a fresh task, and test the route you actually rely on. Do not uninstall plugins, delete caches, or kill idle processes merely to chase token savings.</p>
+          </div>
+        </article>
+        <article class="rung">
+          <div>
+            <h3>Review background state separately</h3>
+            <p>Review ambient suggestions, automations, scheduled tasks, active goals, and background agents. Their existence does not prove ongoing inference, so inspect intent and recent execution before disabling or terminating anything.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="routing">
+      <div class="section-head">
+        <div class="rank">04 · Routing</div>
+        <div>
+          <h2>Use a capability ladder, not model tribalism</h2>
+          <p>Model advice is useful as a routing heuristic, but availability, quota isolation, and relative accounting can change. Verify the current product interface or documentation before relying on those details.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <article class="card">
+          <span class="tag advice">Eric’s practitioner guidance</span>
+          <h3>Proposed ladder</h3>
+          <ul>
+            <li><strong>Luna:</strong> quick, low-stakes completions.</li>
+            <li><strong>Spark:</strong> targeted basic work; Eric describes its usage pool as isolated.</li>
+            <li><strong>Soul, light or medium:</strong> routine coding and project work.</li>
+            <li><strong>Astra:</strong> difficult end-to-end work, notably computer use and video editing in Eric’s experience.</li>
+          </ul>
+          <p class="fine">These are practitioner-oriented roles, not a guaranteed current product or quota matrix.</p>
+        </article>
+        <article class="card callout coral">
+          <span class="tag derived">Meta-summary rule</span>
+          <h3>Escalate on evidence</h3>
+          <ol>
+            <li>Begin with the least costly model likely to meet the correctness bar.</li>
+            <li>Define a visible acceptance test before execution.</li>
+            <li>Escalate when failure is due to capability—not when the prompt or evidence is underspecified.</li>
+            <li>Move the escalation to a fresh, well-scoped task when the preceding context is no longer useful.</li>
+          </ol>
+        </article>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <h3>The key correction to the video shorthand</h3>
+        <p>“Use cheaper models” is incomplete. The real objective is to minimize <em>total cost to a correct result</em>. A lower-effort model can be wasteful if it causes repeated attempts, while Astra can be economical when a single hard pass replaces a long chain of failed routine-model attempts. The correct unit of optimization is the finished, verified milestone—not the price or quota decrement of one turn.</p>
+      </div>
+    </section>
+
+    <section id="experiments">
+      <div class="section-head">
+        <div class="rank">05 · Science</div>
+        <div>
+          <h2>Convert uncertainty into small experiments</h2>
+          <p>Usage discussions contain plausible causal stories. Use matched comparisons to learn which changes matter in your environment and plan.</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Question</th><th>Minimal comparison</th><th>Hold constant</th><th>Record</th><th>Do not conclude</th></tr></thead>
+          <tbody>
+            <tr><td>Does one style plugin matter?</td><td>Run the same short task before and after disabling one style layer.</td><td>Fresh task, model, effort, prompt, files.</td><td>Visible instruction behavior, context indicator if available, latency, correctness.</td><td>Do not infer billing savings from one run.</td></tr>
+            <tr><td>Does a fresh handoff help?</td><td>Compare continuation in a long task with continuation from a ≤300-word handoff.</td><td>Next milestone and acceptance test.</td><td>Retries, tool reads, output quality, context size if exposed.</td><td>Do not count omitted necessary facts as efficiency.</td></tr>
+            <tr><td>Does lower effort preserve quality?</td><td>Run one bounded routine task at two efforts in separate fresh tasks.</td><td>Model, task, environment, verifier.</td><td>Pass/fail, corrections, time, cumulative usage indicator.</td><td>Do not rank models from a single task genre.</td></tr>
+            <tr><td>Does model switching disturb caching?</td><td>Use matched tasks: one stays fixed; one switches at the same turn.</td><td>Prompt prefix, turn count, output target.</td><td>Any exposed cached-input counters and total usage.</td><td>Subscription-meter motion does not reveal the exact cache mechanism.</td></tr>
+            <tr><td>Does integration pruning reduce overhead?</td><td>Disable one unused plugin or one MCP server per trial.</td><td>Fresh startup and diagnostic prompt.</td><td>Catalog size, capability loss, correctness, startup behavior.</td><td>Process absence alone is not token proof.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid-2" style="margin-top:18px">
+        <article class="card callout green">
+          <h3>Optimization metric</h3>
+          <p>Track successful milestones per reset or per usage window, but pair that with correctness, elapsed time, and number of retries. Otherwise the metric rewards superficially cheap failures.</p>
+        </article>
+        <article class="card callout">
+          <h3>Stopping rule</h3>
+          <p>After a change produces no visible reduction or causes capability loss, revert it. Do not keep pruning merely because a component appears large on disk or numerous in a catalog.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="inspiration">
+      <div class="section-head">
+        <div class="rank">06 · Inspiration</div>
+        <div>
+          <h2>The spark—and the step beyond it</h2>
+          <p>This operating model was inspired by Eric Michaud’s YouTube discussion of stretching Codex usage through shorter sessions, deliberate model selection, bounded subagent context, and setup audits.</p>
+        </div>
+      </div>
+      <article class="card callout">
+        <span class="tag advice">Inspiration source</span>
+        <h3><a href="https://www.youtube.com/watch?v=G-FpN6_uoug&amp;t=5s">Watch Eric Michaud’s YouTube video</a></h3>
+        <p>Its central intuition is strong: manage Codex as a portfolio of capability, context, and task boundaries rather than leaving the hardest model attached to an indefinitely growing conversation.</p>
+        <p>This article extends that intuition into an evidence discipline. It separates observable context overhead from provider-side hypotheses, orders interventions by reversibility, and treats the cost of a <em>verified outcome</em>—including retries—as the optimization target.</p>
+      </article>
+    </section>
+
+    <section id="limits">
+      <div class="section-head">
+        <div class="rank">07 · Limits</div>
+        <div>
+          <h2>What this report does—and refuses to do</h2>
+          <p>Good usage advice is mostly epistemic discipline: never turn an observed configuration into a causal billing claim without a bridge of evidence.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <article class="card">
+          <span class="tag verified">Covered</span>
+          <ul>
+            <li>Context, cumulative usage, and storage are treated as different quantities.</li>
+            <li>Directly observable overhead is separated from practitioner inference and provider-side unknowns.</li>
+            <li>Interventions are ordered from behavioral and reversible to persistent and configuration-changing.</li>
+            <li>Model routing is judged by verified task outcomes, including retries—not by one-turn cost alone.</li>
+            <li>The article provides an audit method without exposing anyone’s machine configuration or task history.</li>
+          </ul>
+        </article>
+        <article class="card limits">
+          <span class="tag unknown">Not established</span>
+          <ul>
+            <li>Current provider pricing, plan limits, model availability, or reset policy.</li>
+            <li>Exact subscription accounting for cached tokens or any specific request.</li>
+            <li>Whether every model/reasoning switch causes a cache miss.</li>
+            <li>Whether every enabled plugin or deferred tool schema is injected on every turn.</li>
+            <li>Exact savings from any proposed edit.</li>
+          </ul>
+        </article>
+      </div>
+      <div class="card callout coral" style="margin-top:18px">
+        <h3>Bottom line</h3>
+        <p>The most defensible immediate wins are mundane and powerful: shorter task histories, bounded tool output, minimal delegation context, and removal of duplicated standing instructions. Model routing is the second layer. Provider-cache theories and quota tactics are the third layer and should remain hypotheses until matched tests—or authoritative product documentation—support them.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <strong>Codex context and usage field guide</strong><br>
+    A standalone, responsive, keyboard-navigable, and print-ready educational article. No external scripts, fonts, analytics, or embedded private material.
+  </footer>
+</body>
+</html>
